@@ -1,6 +1,7 @@
 package com.metahorce.cinemagic.services;
 
 import com.metahorce.cinemagic.entities.Pelicula;
+import com.metahorce.cinemagic.exceptions.ResourceNotFoundException;
 import com.metahorce.cinemagic.repositories.PeliculaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class PeliculaServiceImpl implements PeliculaService{
     public Pelicula getPeliculaById(Integer id){
         Pelicula getPelicula = peliculaRepository.findById(id).orElse(null);
         if (getPelicula == null){
-            return null;
+            throw new ResourceNotFoundException("No se encontro la pelicula con el id: "+ id);
         }
         return getPelicula;
     }
@@ -36,8 +37,9 @@ public class PeliculaServiceImpl implements PeliculaService{
     public Pelicula updatePelicula(Integer id, Pelicula pelicula){
         Pelicula updatePelicula = peliculaRepository.findById(id).orElse(null);
         if (updatePelicula == null){
-            return null;
+            throw new ResourceNotFoundException("No se encontro la pelicula con el id: "+ id);
         }
+
         updatePelicula.setTitulo(pelicula.getTitulo());
         updatePelicula.setDuracion(pelicula.getDuracion());
         return peliculaRepository.save(updatePelicula);

@@ -1,6 +1,8 @@
 package com.metahorce.cinemagic.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "usuarios")
@@ -11,8 +13,13 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Integer id;
 
+    @NotNull(message = "El nombre del usuario no debe ser nulo")
+    @NotBlank(message = "El nombre del usuario no debe estar vacio")
     private String nombre;
 
+    @NotNull(message = "El correo del usuario no debe ser nulo")
+    @NotBlank(message = "El correo del usuario no debe estar vacio")
+    @Column(unique = true)
     private String correo;
 
     @Enumerated(EnumType.STRING)

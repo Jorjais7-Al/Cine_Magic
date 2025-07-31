@@ -1,9 +1,12 @@
 package com.metahorce.cinemagic.controllers;
 
 import com.metahorce.cinemagic.entities.Calificacion;
+import com.metahorce.cinemagic.exceptions.InvalidDataException;
 import com.metahorce.cinemagic.services.CalificacionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,12 +27,18 @@ public class CalificacionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCalificacion(@RequestBody Calificacion calificacion){
+    public ResponseEntity<?> createCalificacion(@Valid @RequestBody Calificacion calificacion, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new InvalidDataException("Error de validación", bindingResult);
+        }
         return ResponseEntity.ok(calificacionService.createCalificacion(calificacion));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCalificacion(@PathVariable("id") Integer id, @RequestBody Calificacion calificacion){
+    public ResponseEntity<?> updateCalificacion(@PathVariable("id") Integer id,@Valid @RequestBody Calificacion calificacion, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new InvalidDataException("Error de validación", bindingResult);
+        }
         return ResponseEntity.ok(calificacionService.updateCalificacion(id, calificacion));
     }
 

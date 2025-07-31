@@ -1,9 +1,12 @@
 package com.metahorce.cinemagic.controllers;
 
 import com.metahorce.cinemagic.entities.Pelicula;
+import com.metahorce.cinemagic.exceptions.InvalidDataException;
 import com.metahorce.cinemagic.services.PeliculaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,12 +27,18 @@ public class PeliculaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPelicula(@RequestBody Pelicula pelicula){
+    public ResponseEntity<?> createPelicula(@Valid @RequestBody Pelicula pelicula, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidDataException("Error de validación", bindingResult);
+        }
         return ResponseEntity.ok(peliculaService.createPelicula(pelicula));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePelicula(@PathVariable("id") Integer id, @RequestBody Pelicula pelicula){
+    public ResponseEntity<?> updatePelicula(@PathVariable("id") Integer id,@Valid @RequestBody Pelicula pelicula, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new InvalidDataException("Error de validación", bindingResult);
+        }
         return ResponseEntity.ok(peliculaService.updatePelicula(id, pelicula));
     }
 

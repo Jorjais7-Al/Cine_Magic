@@ -1,6 +1,7 @@
 package com.metahorce.cinemagic.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "calificaciones")
@@ -11,14 +12,20 @@ public class Calificacion {
     @Column(name = "id_calificacion")
     private Integer id;
 
+    @Min(value = 1, message = "La calificación debe ser de 1 a 5")
+    @Max(value = 5, message = "La calificación debe ser de 1 a 5")
     private int calificacion;
 
+    @NotNull(message = "La reseña no debe ser nulo")
+    @NotBlank(message = "La reseña no debe estar vacio")
     private String resenia;
 
+    @NotNull(message = "El usuario no debe ser nulo")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
+    @NotNull(message = "La pelicula no debe ser nulo")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_pelicula", nullable = false)
     private Pelicula pelicula;

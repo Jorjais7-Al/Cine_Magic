@@ -1,6 +1,9 @@
 package com.metahorce.cinemagic.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "funciones")
@@ -11,10 +14,17 @@ public class Funcion {
     @Column(name = "id_funcion")
     private Integer id;
 
+    @NotNull(message = "La fecha no debe ser nulo, ingresa la fecha como este formato yyyy-mm-dd")
+    @NotBlank(message = "La fecha no debe estar vacio, ingresa la fecha como este formato yyyy-mm-dd")
+    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "Formato de fecha inválido, ingresa la fecha como este formato yyyy-mm-dd")
     private String fecha;
 
+    @NotNull(message = "La hora no debe ser nulo, ingresa el horario como este formato hh:mm:ss")
+    @NotBlank(message = "La hora no debe estar vacio, , ingresa el horario como este formato hh:mm:ss")
+    @Pattern(regexp = "^\\d{2}:\\d{2}:\\d{2}$", message = "Formato de hora inválido, ingresa el horario como este formato hh:mm:ss")
     private String hora;
 
+    @NotNull(message = "La pelicula no debe ser nulo")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_pelicula", nullable = false)
     private Pelicula pelicula;

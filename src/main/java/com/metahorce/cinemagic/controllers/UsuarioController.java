@@ -2,10 +2,13 @@ package com.metahorce.cinemagic.controllers;
 
 import com.metahorce.cinemagic.entities.Calificacion;
 import com.metahorce.cinemagic.entities.Usuario;
+import com.metahorce.cinemagic.exceptions.InvalidDataException;
 import com.metahorce.cinemagic.services.CalificacionService;
 import com.metahorce.cinemagic.services.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,12 +29,18 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<?> createUsuario(@Valid @RequestBody Usuario usuario, BindingResult  bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new InvalidDataException("Error de validación", bindingResult);
+        }
         return ResponseEntity.ok(usuarioService.createUsuario(usuario));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUsuario(@PathVariable("id") Integer id, @RequestBody Usuario usuario){
+    public ResponseEntity<?> updateUsuario(@PathVariable("id") Integer id,@Valid @RequestBody Usuario usuario, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new InvalidDataException("Error de validación", bindingResult);
+        }
         return ResponseEntity.ok(usuarioService.updateUsuario(id, usuario));
     }
 

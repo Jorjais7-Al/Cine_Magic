@@ -1,7 +1,9 @@
 package com.metahorce.cinemagic.entities;
 
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "boletos")
@@ -12,14 +14,19 @@ public class Boleto {
     @Column(name = "id_boleto")
     private Integer id;
 
+    @NotNull(message = "El asiento del boleto no debe ser nulo")
+    @NotBlank(message = "El asiento del boleto no debe estar vacio")
     private String asiento;
 
+    @Min(value = 1, message = "El precio del boleto debe ser mayor a 0")
     private double precio;
 
+    @NotNull(message = "La función no debe ser nulo")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_funcion", nullable = false)
     private Funcion funcion;
 
+    @NotNull(message = "El usuario no debe ser nulo")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;

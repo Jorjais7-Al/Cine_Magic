@@ -1,9 +1,12 @@
 package com.metahorce.cinemagic.controllers;
 
 import com.metahorce.cinemagic.entities.Boleto;
+import com.metahorce.cinemagic.exceptions.InvalidDataException;
 import com.metahorce.cinemagic.services.BoletoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +27,10 @@ public class BoletoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBoleto(@RequestBody Boleto boleto) {
+    public ResponseEntity<?> createBoleto(@Valid @RequestBody Boleto boleto, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            throw new InvalidDataException("Error de validación", bindingResult);
+        }
         return ResponseEntity.ok(boletoService.createBoleto(boleto));
     }
 

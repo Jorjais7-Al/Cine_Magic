@@ -1,9 +1,12 @@
 package com.metahorce.cinemagic.controllers;
 
 import com.metahorce.cinemagic.entities.Funcion;
+import com.metahorce.cinemagic.exceptions.InvalidDataException;
 import com.metahorce.cinemagic.services.FuncionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,12 +28,18 @@ public class FuncionController {
 
 
     @PostMapping
-    public ResponseEntity<?> createFuncion(@RequestParam String user, @RequestBody Funcion funcion){
+    public ResponseEntity<?> createFuncion(@RequestParam String user, @Valid @RequestBody Funcion funcion, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new InvalidDataException("Error de validación", bindingResult);
+        }
         return ResponseEntity.ok(funcionService.createFuncion(funcion, user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateFuncion(@PathVariable("id") Integer id, @RequestBody Funcion funcion){
+    public ResponseEntity<?> updateFuncion(@PathVariable("id") Integer id,@Valid @RequestBody Funcion funcion, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new InvalidDataException("Error de validación", bindingResult);
+        }
         return ResponseEntity.ok(funcionService.updateFuncion(id, funcion));
     }
 
