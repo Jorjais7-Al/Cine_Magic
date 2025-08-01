@@ -4,6 +4,7 @@ import com.metahorce.cinemagic.entities.Boleto;
 import com.metahorce.cinemagic.entities.Funcion;
 import com.metahorce.cinemagic.entities.Usuario;
 import com.metahorce.cinemagic.exceptions.InvalidDataException;
+import com.metahorce.cinemagic.exceptions.InvalidUserException;
 import com.metahorce.cinemagic.exceptions.ResourceNotFoundException;
 import com.metahorce.cinemagic.repositories.BoletoRepository;
 import com.metahorce.cinemagic.repositories.FuncionRepository;
@@ -60,8 +61,20 @@ public class BoletoServiceImpl implements BoletoService {
     }
 
     @Override
-    public Double totalSumPrices(){
+    public Double totalSumPrices(String user){
+        if(!"ADMINISTRADOR".equals(user)) {
+            throw new InvalidUserException("El usuario no puede ejecutar esta petición");
+        }
+
         return boletoRepository.totalSumPrices();
     }
 
+    @Override
+    public List<Object[]> getSalesReport(String user){
+        if(!"ADMINISTRADOR".equals(user)) {
+            throw new InvalidUserException("El usuario no puede ejecutar esta petición");
+        }
+
+        return boletoRepository.getSalesReport();
+    }
 }

@@ -2,6 +2,7 @@ package com.metahorce.cinemagic.services;
 
 import com.metahorce.cinemagic.entities.Usuario;
 import com.metahorce.cinemagic.exceptions.DuplicateDataException;
+import com.metahorce.cinemagic.exceptions.InvalidUserException;
 import com.metahorce.cinemagic.exceptions.ResourceNotFoundException;
 import com.metahorce.cinemagic.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,11 @@ public class UsuarioServiceImpl implements UsuarioService{
     }
 
     @Override
-    public void deleteUsuario(Integer id){
+    public void deleteUsuario(Integer id, String user){
+        if(!"ADMINISTRADOR".equals(user)) {
+            throw new InvalidUserException("El usuario no puede ejecutar esta petición");
+        }
+
         if (!usuarioRepository.existsById(id)){
             throw new ResourceNotFoundException("No se encontro el usuario con el id: "+ id);
         }

@@ -78,8 +78,8 @@ public class CalificacionServiceImpl implements CalificacionService {
             throw new ResourceNotFoundException("No se encontro la pelicula con el id: "+ idPelicula);
         }
 
-        calificacionUpdate.setPelicula(calificacion.getPelicula());
-        calificacionUpdate.setUsuario(calificacion.getUsuario());
+        calificacionUpdate.setPelicula(pelicula);
+        calificacionUpdate.setUsuario(usuario);
         calificacionUpdate.setCalificacion(calificacion.getCalificacion());
         calificacionUpdate.setResenia(calificacion.getResenia());
         return calificacionRepository.save(calificacionUpdate);

@@ -136,7 +136,7 @@ public class FuncionServiceImplTest {
 
         when(funcionRepository.save(funcion)).thenReturn(funcion);
 
-        Funcion updateFuncion = funcionService.updateFuncion(funcion.getId(), funcion);
+        Funcion updateFuncion = funcionService.updateFuncion(funcion.getId(), funcion, "ADMINISTRADOR");
 
         assertEquals("08:40:00", updateFuncion.getHora());
     }
@@ -146,7 +146,7 @@ public class FuncionServiceImplTest {
         when(funcionRepository.findById(funcion.getId())).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            funcionService.updateFuncion(funcion.getId(), funcion);
+            funcionService.updateFuncion(funcion.getId(), funcion, "ADMINISTRADOR");
         });
 
         assertTrue(exception.getMessage().contains("No se encontro la función con el id: "));
@@ -160,7 +160,7 @@ public class FuncionServiceImplTest {
         when(funcionRepository.findById(funcion.getId())).thenReturn(Optional.ofNullable(funcion));
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            funcionService.updateFuncion(funcion.getId(), funcion);
+            funcionService.updateFuncion(funcion.getId(), funcion, "ADMINISTRADOR");
         });
 
         assertTrue(exception.getMessage().contains("No se encontro la pelicula con el id: "));
@@ -173,7 +173,7 @@ public class FuncionServiceImplTest {
 
         when(funcionRepository.existsById(idFuncion)).thenReturn(true);
 
-        funcionService.deleteFuncion(idFuncion);
+        funcionService.deleteFuncion(idFuncion, "ADMINISTRADOR");
 
         verify(funcionRepository, times(1)).deleteById(idFuncion);
     }
@@ -183,7 +183,7 @@ public class FuncionServiceImplTest {
         when(funcionRepository.existsById(funcion.getId())).thenReturn(false);
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            funcionService.deleteFuncion(funcion.getId());
+            funcionService.deleteFuncion(funcion.getId(), "ADMINISTRADOR");
         });
 
         assertTrue(exception.getMessage().contains("No se encontro la función con el id: "));

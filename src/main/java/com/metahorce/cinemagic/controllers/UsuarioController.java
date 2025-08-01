@@ -45,8 +45,8 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUsuario(@PathVariable("id") Integer id){
-        usuarioService.deleteUsuario(id);
+    public ResponseEntity<?> deleteUsuario(@RequestParam String user, @PathVariable("id") Integer id){
+        usuarioService.deleteUsuario(id, user);
         return ResponseEntity.ok("El usuario con el id: "+ id + " se elimino correctamente");
     }
 

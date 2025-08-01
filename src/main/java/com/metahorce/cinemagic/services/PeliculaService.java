@@ -10,10 +10,10 @@ public interface PeliculaService {
 
     Pelicula getPeliculaById(Integer id);
 
-    Pelicula createPelicula(Pelicula pelicula);
+    Pelicula createPelicula(Pelicula pelicula, String user);
 
-    Pelicula updatePelicula(Integer id, Pelicula pelicula);
+    Pelicula updatePelicula(Integer id, Pelicula pelicula, String user);
 
-    void deletePelicula(Integer id);
+    void deletePelicula(Integer id, String user);
 
 }

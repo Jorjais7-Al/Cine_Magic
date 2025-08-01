@@ -12,8 +12,8 @@ public interface FuncionService {
 
     Funcion createFuncion(Funcion funcion, String user);
 
-    Funcion updateFuncion(Integer id, Funcion funcion);
+    Funcion updateFuncion(Integer id, Funcion funcion, String user);
 
-    void deleteFuncion(Integer id);
+    void deleteFuncion(Integer id, String user);
 
 }

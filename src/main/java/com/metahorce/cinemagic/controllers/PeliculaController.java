@@ -27,24 +27,24 @@ public class PeliculaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPelicula(@Valid @RequestBody Pelicula pelicula, BindingResult bindingResult) {
+    public ResponseEntity<?> createPelicula(@RequestParam String user, @Valid @RequestBody Pelicula pelicula, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new InvalidDataException("Error de validación", bindingResult);
         }
-        return ResponseEntity.ok(peliculaService.createPelicula(pelicula));
+        return ResponseEntity.ok(peliculaService.createPelicula(pelicula, user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePelicula(@PathVariable("id") Integer id,@Valid @RequestBody Pelicula pelicula, BindingResult bindingResult){
+    public ResponseEntity<?> updatePelicula(@RequestParam String user, @PathVariable("id") Integer id,@Valid @RequestBody Pelicula pelicula, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new InvalidDataException("Error de validación", bindingResult);
         }
-        return ResponseEntity.ok(peliculaService.updatePelicula(id, pelicula));
+        return ResponseEntity.ok(peliculaService.updatePelicula(id, pelicula, user));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePelicula(@PathVariable("id") Integer id){
-        peliculaService.deletePelicula(id);
+    public ResponseEntity<?> deletePelicula(@RequestParam String user, @PathVariable("id") Integer id){
+        peliculaService.deletePelicula(id, user);
         return ResponseEntity.ok("La pelicula con el id: "+ id + " se elimino correctamente");
     }
 

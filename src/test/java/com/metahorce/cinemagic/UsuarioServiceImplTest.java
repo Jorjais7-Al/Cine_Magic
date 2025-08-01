@@ -127,7 +127,7 @@ public class UsuarioServiceImplTest {
 
         when(usuarioRepository.existsById(idUsuario)).thenReturn(true);
 
-        usuarioService.deleteUsuario(idUsuario);
+        usuarioService.deleteUsuario(idUsuario, "ADMINISTRADOR");
 
         verify(usuarioRepository, times(1)).deleteById(idUsuario);
     }
@@ -137,7 +137,7 @@ public class UsuarioServiceImplTest {
         when(usuarioRepository.existsById(usuario.getId())).thenReturn(false);
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            usuarioService.deleteUsuario(usuario.getId());
+            usuarioService.deleteUsuario(usuario.getId(), "ADMINISTRADOR");
         });
 
         assertTrue(exception.getMessage().contains("No se encontro el usuario con el id: "));

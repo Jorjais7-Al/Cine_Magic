@@ -14,5 +14,5 @@ public interface UsuarioService {
 
     Usuario updateUsuario(Integer id, Usuario usuario);
 
-    void deleteUsuario(Integer id);
+    void deleteUsuario(Integer id, String user);
 }

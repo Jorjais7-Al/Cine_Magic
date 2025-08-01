@@ -53,7 +53,11 @@ public class FuncionServiceImpl implements FuncionService{
     }
 
     @Override
-    public Funcion updateFuncion(Integer id, Funcion funcion){
+    public Funcion updateFuncion(Integer id, Funcion funcion, String user){
+        if(!"ADMINISTRADOR".equals(user)) {
+            throw new InvalidUserException("El usuario no puede ejecutar esta petición");
+        }
+
         Funcion updateFuncion = funcionRepository.findById(id).orElse(null);
         if (updateFuncion == null){
             throw new ResourceNotFoundException("No se encontro la función con el id: "+ id);
@@ -67,15 +71,20 @@ public class FuncionServiceImpl implements FuncionService{
 
         updateFuncion.setFecha(funcion.getFecha());
         updateFuncion.setHora(funcion.getHora());
-        updateFuncion.setPelicula(funcion.getPelicula());
+        updateFuncion.setPelicula(pelicula);
         return funcionRepository.save(updateFuncion);
     }
 
     @Override
-    public void deleteFuncion(Integer id){
+    public void deleteFuncion(Integer id, String user){
+        if(!"ADMINISTRADOR".equals(user)) {
+            throw new InvalidUserException("El usuario no puede ejecutar esta petición");
+        }
+
         if (!funcionRepository.existsById(id)){
             throw new ResourceNotFoundException("No se encontro la función con el id: " + id);
         }
+
         funcionRepository.deleteById(id);
     }
 

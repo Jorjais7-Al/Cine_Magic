@@ -71,7 +71,7 @@ public class PeliculaServiceImplTest {
 
         when(peliculaRepository.save(pelicula)).thenReturn(pelicula);
 
-        Pelicula newPelicula = peliculaService.createPelicula(pelicula);
+        Pelicula newPelicula = peliculaService.createPelicula(pelicula, "ADMINISTRADOR");
 
         assertNotNull(newPelicula);
         assertEquals(1, newPelicula.getId());
@@ -85,7 +85,7 @@ public class PeliculaServiceImplTest {
 
         when(peliculaRepository.save(pelicula)).thenReturn(pelicula);
 
-        Pelicula updatePelicula = peliculaService.updatePelicula(pelicula.getId(), pelicula);
+        Pelicula updatePelicula = peliculaService.updatePelicula(pelicula.getId(), pelicula, "ADMINISTRADOR");
 
         assertEquals(300, updatePelicula.getDuracion());
     }
@@ -95,7 +95,7 @@ public class PeliculaServiceImplTest {
         when(peliculaRepository.findById(pelicula.getId())).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            peliculaService.updatePelicula(pelicula.getId(), pelicula);
+            peliculaService.updatePelicula(pelicula.getId(), pelicula, "ADMINISTRADOR");
         });
 
         assertTrue(exception.getMessage().contains("No se encontro la pelicula con el id: "));
@@ -108,7 +108,7 @@ public class PeliculaServiceImplTest {
 
         when(peliculaRepository.existsById(idPelicula)).thenReturn(true);
 
-        peliculaService.deletePelicula(idPelicula);
+        peliculaService.deletePelicula(idPelicula, "ADMINISTRADOR");
 
         verify(peliculaRepository, times(1)).deleteById(idPelicula);
     }
@@ -118,7 +118,7 @@ public class PeliculaServiceImplTest {
         when(peliculaRepository.existsById(pelicula.getId())).thenReturn(false);
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            peliculaService.deletePelicula(pelicula.getId());
+            peliculaService.deletePelicula(pelicula.getId(), "ADMINISTRADOR");
         });
 
         assertTrue(exception.getMessage().contains("No se encontro la pelicula con el id: "));

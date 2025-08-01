@@ -9,8 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/cinemagic/boletos")
@@ -30,10 +29,28 @@ public class BoletoController {
     }
 
     @GetMapping("/ventaTotal")
-    public ResponseEntity<?> getBoletoSales(){
-        Double total = boletoService.totalSumPrices();
+    public ResponseEntity<?> getBoletoSales(@RequestParam String user){
+        Double total = boletoService.totalSumPrices(user);
         Map<String, Object> response = new HashMap<>();
         response.put("VentaTotalDeBoletos", total);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/reporteVentas")
+    public ResponseEntity<?> getSalesReport(@RequestParam String user){
+        List<Object[]> sales = boletoService.getSalesReport(user);
+
+        List<Map<String, Object>> response = new ArrayList<>();
+
+        for (Object[] row : sales) {
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("TituloDePelicula", row[0]);
+            item.put("BoletosVendidos", row[1]);
+            item.put("VentaTotal", row[2]);
+
+            response.add(item);
+        }
+
         return ResponseEntity.ok(response);
     }
 

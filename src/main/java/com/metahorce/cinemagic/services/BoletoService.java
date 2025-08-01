@@ -12,6 +12,7 @@ public interface BoletoService {
 
     Boleto createBoleto(Boleto boleto);
 
-    Double totalSumPrices();
+    Double totalSumPrices(String user);
 
+    List<Object[]> getSalesReport(String user);
 }

@@ -134,7 +134,7 @@ public class BoletoServiceImplTest {
     public void testTotalSumPrices(){
         Double precio = 355.12;
         when(boletoRepository.totalSumPrices()).thenReturn(precio);
-        Double precioActual = boletoService.totalSumPrices();
+        Double precioActual = boletoService.totalSumPrices("ADMINISTRADOR");
         assertEquals(355.12, precioActual);
     }
 

@@ -36,16 +36,16 @@ public class FuncionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateFuncion(@PathVariable("id") Integer id,@Valid @RequestBody Funcion funcion, BindingResult bindingResult){
+    public ResponseEntity<?> updateFuncion(@RequestParam String user, @PathVariable("id") Integer id,@Valid @RequestBody Funcion funcion, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new InvalidDataException("Error de validación", bindingResult);
         }
-        return ResponseEntity.ok(funcionService.updateFuncion(id, funcion));
+        return ResponseEntity.ok(funcionService.updateFuncion(id, funcion, user));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteFuncion(@PathVariable("id") Integer id){
-        funcionService.deleteFuncion(id);
+    public ResponseEntity<?> deleteFuncion(@RequestParam String user, @PathVariable("id") Integer id){
+        funcionService.deleteFuncion(id, user);
         return ResponseEntity.ok("La función con el id: "+ id + " se elimino correctamente");
     }
 
