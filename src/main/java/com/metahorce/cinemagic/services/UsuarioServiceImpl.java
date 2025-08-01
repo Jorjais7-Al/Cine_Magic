@@ -32,7 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService{
     @Override
     public Usuario createUsuario(Usuario usuario){
         if (usuarioRepository.existsBycorreo(usuario.getCorreo())) {
-            throw new DuplicateDataException("El correo electrónico ya está registrado.");
+            throw new DuplicateDataException("El correo electrónico ya está registrado");
         }
         return usuarioRepository.save(usuario);
     }
@@ -52,6 +52,9 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Override
     public void deleteUsuario(Integer id){
+        if (!usuarioRepository.existsById(id)){
+            throw new ResourceNotFoundException("No se encontro el usuario con el id: "+ id);
+        }
         usuarioRepository.deleteById(id);
     }
 

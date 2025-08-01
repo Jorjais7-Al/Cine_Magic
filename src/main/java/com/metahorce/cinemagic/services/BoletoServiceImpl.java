@@ -59,4 +59,9 @@ public class BoletoServiceImpl implements BoletoService {
         return boletoRepository.save(boleto);
     }
 
+    @Override
+    public Double totalSumPrices(){
+        return boletoRepository.totalSumPrices();
+    }
+
 }

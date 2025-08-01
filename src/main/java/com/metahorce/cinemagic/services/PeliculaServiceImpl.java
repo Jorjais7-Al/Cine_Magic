@@ -47,6 +47,9 @@ public class PeliculaServiceImpl implements PeliculaService{
 
     @Override
     public void deletePelicula(Integer id){
+        if (!peliculaRepository.existsById(id)){
+            throw new ResourceNotFoundException("No se encontro la pelicula con el id: "+ id);
+        }
         peliculaRepository.deleteById(id);
     }
 

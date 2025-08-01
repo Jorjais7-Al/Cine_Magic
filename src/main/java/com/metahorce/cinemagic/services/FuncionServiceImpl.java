@@ -73,6 +73,9 @@ public class FuncionServiceImpl implements FuncionService{
 
     @Override
     public void deleteFuncion(Integer id){
+        if (!funcionRepository.existsById(id)){
+            throw new ResourceNotFoundException("No se encontro la función con el id: " + id);
+        }
         funcionRepository.deleteById(id);
     }
 

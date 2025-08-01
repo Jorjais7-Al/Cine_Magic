@@ -63,7 +63,7 @@ public class CalificacionServiceImpl implements CalificacionService {
     public Calificacion updateCalificacion(Integer id, Calificacion calificacion){
         Calificacion calificacionUpdate = calificacionRepository.findById(id).orElse(null);
         if (calificacionUpdate == null){
-            throw new ResourceNotFoundException("No se encontro la calificacón con el id: "+ id);
+            throw new ResourceNotFoundException("No se encontro la calificación con el id: "+ id);
         }
 
         Integer idUsuario = calificacion.getUsuario().getId();
@@ -87,6 +87,9 @@ public class CalificacionServiceImpl implements CalificacionService {
 
     @Override
     public void deleteCalificacion(Integer id){
+        if (!calificacionRepository.existsById(id)) {
+            throw new ResourceNotFoundException("No se encontro la calificación con el id: " + id);
+        }
         calificacionRepository.deleteById(id);
     }
 

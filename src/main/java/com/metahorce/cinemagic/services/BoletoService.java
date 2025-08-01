@@ -12,4 +12,6 @@ public interface BoletoService {
 
     Boleto createBoleto(Boleto boleto);
 
+    Double totalSumPrices();
+
 }

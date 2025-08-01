@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/cinemagic/boletos")
 public class BoletoController {
@@ -24,6 +27,14 @@ public class BoletoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getBoletoById(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(boletoService.getBoletoById(id));
+    }
+
+    @GetMapping("/ventaTotal")
+    public ResponseEntity<?> getBoletoSales(){
+        Double total = boletoService.totalSumPrices();
+        Map<String, Object> response = new HashMap<>();
+        response.put("VentaTotalDeBoletos", total);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
