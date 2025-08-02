@@ -3,6 +3,7 @@ package com.metahorce.cinemagic;
 import com.metahorce.cinemagic.entities.Boleto;
 import com.metahorce.cinemagic.entities.Funcion;
 import com.metahorce.cinemagic.entities.Usuario;
+import com.metahorce.cinemagic.exceptions.InvalidUserException;
 import com.metahorce.cinemagic.exceptions.ResourceNotFoundException;
 import com.metahorce.cinemagic.repositories.BoletoRepository;
 import com.metahorce.cinemagic.repositories.FuncionRepository;
@@ -136,6 +137,17 @@ public class BoletoServiceImplTest {
         when(boletoRepository.totalSumPrices()).thenReturn(precio);
         Double precioActual = boletoService.totalSumPrices("ADMINISTRADOR");
         assertEquals(355.12, precioActual);
+    }
+
+    @Test
+    public void testTotalSumPrices_whenTipoUsuarioIsDifferent(){
+        Double precio = 355.12;
+        when(boletoRepository.totalSumPrices()).thenReturn(precio);
+        Exception exception = assertThrows(InvalidUserException.class, () -> {
+            boletoService.totalSumPrices("ESPECTADOR");
+        });
+
+        assertTrue(exception.getMessage().contains("El usuario no puede ejecutar esta petición"));
     }
 
 }

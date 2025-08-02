@@ -3,6 +3,7 @@ package com.metahorce.cinemagic;
 import com.metahorce.cinemagic.entities.TipoUsuario;
 import com.metahorce.cinemagic.entities.Usuario;
 import com.metahorce.cinemagic.exceptions.DuplicateDataException;
+import com.metahorce.cinemagic.exceptions.InvalidUserException;
 import com.metahorce.cinemagic.exceptions.ResourceNotFoundException;
 import com.metahorce.cinemagic.repositories.UsuarioRepository;
 import com.metahorce.cinemagic.services.UsuarioServiceImpl;
@@ -130,6 +131,20 @@ public class UsuarioServiceImplTest {
         usuarioService.deleteUsuario(idUsuario, "ADMINISTRADOR");
 
         verify(usuarioRepository, times(1)).deleteById(idUsuario);
+    }
+
+    @Test
+    public void testDeleteUsuario_whenTipoUsuarioIsDifferent(){
+        Integer idUsuario = 1;
+        usuario.setId(idUsuario);
+
+        when(usuarioRepository.existsById(idUsuario)).thenReturn(true);
+
+        Exception exception = assertThrows(InvalidUserException.class, () -> {
+            usuarioService.deleteUsuario(usuario.getId(), "ESPECTADOR");
+        });
+
+        assertTrue(exception.getMessage().contains("El usuario no puede ejecutar esta petición"));
     }
 
     @Test

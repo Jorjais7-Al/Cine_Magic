@@ -142,6 +142,17 @@ public class FuncionServiceImplTest {
     }
 
     @Test
+    public void testUpdateFuncion_whenTipoUsuarioIsDifferent(){
+        when(funcionRepository.findById(funcion.getId())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(InvalidUserException.class, () -> {
+            funcionService.updateFuncion(funcion.getId(), funcion, "ESPECTADOR");
+        });
+
+        assertTrue(exception.getMessage().contains("El usuario no puede ejecutar esta petición"));
+    }
+
+    @Test
     public void testUpdateFuncion_whenFuncionNotFound(){
         when(funcionRepository.findById(funcion.getId())).thenReturn(Optional.empty());
 
@@ -176,6 +187,20 @@ public class FuncionServiceImplTest {
         funcionService.deleteFuncion(idFuncion, "ADMINISTRADOR");
 
         verify(funcionRepository, times(1)).deleteById(idFuncion);
+    }
+
+    @Test
+    public void testDeleteFuncion_whenUsuarioIsDifferent(){
+        Integer idFuncion = 1;
+        funcion.setId(idFuncion);
+
+        when(funcionRepository.existsById(idFuncion)).thenReturn(true);
+
+        Exception exception = assertThrows(InvalidUserException.class, () -> {
+            funcionService.deleteFuncion(funcion.getId(), "ESPECTADOR");
+        });
+
+        assertTrue(exception.getMessage().contains("El usuario no puede ejecutar esta petición"));
     }
 
     @Test
